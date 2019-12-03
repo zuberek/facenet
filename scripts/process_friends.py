@@ -35,7 +35,13 @@ for i, messages in enumerate(os.listdir('messages/inbox')):
     # interval = datetime.fromtimestamp(latest) - datetime.fromtimestamp(started)
     # frequency = (sent+received)/interval.days
 
-    name = 'friend' + str(i)
+    # split the string into a list  
+    name_list = name.split() 
+    name = "" 
+  
+    for elem in name_list: 
+        name += (elem[0].upper()+'.') 
+          
     friends.append({'name': name, 'started': started, 'sent': sent,
                     'received': received})
 
