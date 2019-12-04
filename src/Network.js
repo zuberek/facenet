@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import './App.css'
 import * as d3 from "d3";
+const data = require('./data.json');
 class Network extends Component {
+
     constructor(props){
         super(props);
         //this.createNetwork = this.createNetwork.bind(this);
@@ -13,6 +15,7 @@ class Network extends Component {
         Network.createNetwork();
     }
     static createNetwork() {
+
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = 800 - margin.left - margin.right,
@@ -26,7 +29,6 @@ class Network extends Component {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        const data = {"nodes":[{"id":1,"name":"A"},{"id":2,"name":"B"},{"id":3,"name":"C"},{"id":4,"name":"D"},{"id":5,"name":"E"},{"id":6,"name":"F"},{"id":7,"name":"G"},{"id":8,"name":"H"},{"id":9,"name":"I"},{"id":10,"name":"J"}],"links":[{"source":1,"target":2},{"source":1,"target":5},{"source":1,"target":6},{"source":2,"target":3},{"source":2,"target":7},{"source":3,"target":4},{"source":8,"target":3},{"source":4,"target":5},{"source":4,"target":9},{"source":5,"target":10}]}
 
         // Initialize the links
         var link = svg
