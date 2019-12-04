@@ -2,48 +2,56 @@ import os
 import json
 import csv
 from datetime import datetime
+from random import randint
 
 friends = []
 
-for i, messages in enumerate(os.listdir('messages/inbox')):
-    with open('messages/inbox/%s/message_1.json' % messages) as f:
-        conversation = json.loads(f.read())
-
-    if(len(conversation['participants']) > 2):
-        continue
-
-    name = conversation['title']
-    # latest = conversation['messages'][0]['timestamp_ms']
-    started = datetime.fromtimestamp(int(str(conversation['messages'][-1]['timestamp_ms'])[:-3]))
-    # latest = int(str(conversation['messages'][0]['timestamp_ms'])[:-3])
-    # latest = datetime.now()
-    name = name.encode('ascii', 'ignore').decode()
-
-    if(len(name) == 0):
-        continue
+for i, inbox in enumerate(os.listdir('messages/inbox')):
 
     sent = 0
     received = 0
 
-    for message in conversation['messages']:
-        if(message['sender_name'] == name):
-            received = received + 1 
-        else:
-            sent = sent + 1
+    # get static data like name and start of conversation
+    with open('messages/inbox/%s/message_1.json' % inbox ) as f:
+        conversation = json.loads(f.read())
 
-    # interval = datetime.now() - datetime.fromtimestamp(started)
-    # interval = datetime.fromtimestamp(latest) - datetime.fromtimestamp(started)
-    # frequency = (sent+received)/interval.days
+    # skip if group conversation
+    if(len(conversation['participants']) > 2):
+        continue
 
-    # split the string into a list  
-    name_list = name.split() 
-    name = "" 
-  
+    name = conversation['title']
+    clean_name = name.encode('ascii', 'ignore').decode()
+
+    # skip if non ascii name
+    if(len(clean_name) == 0):
+        continue
+
+    name_list = conversation['title'].split() 
+    initials = "" 
     for elem in name_list: 
-        name += (elem[0].upper()+'.') 
-          
-    friends.append({'name': name, 'started': started, 'sent': sent,
-                    'received': received})
+        initials += (elem[0].upper()+'.') 
+
+    started = datetime.fromtimestamp(int(str(conversation['messages'][-1]['timestamp_ms'])[:-3]))
+
+    # count exchanged messages
+    for messages in os.listdir('messages/inbox/%s' % inbox):
+
+        # skip if not json
+        if messages.split('.')[-1] != 'json':
+            continue
+
+        with open('messages/inbox/%s/%s' % (inbox, messages)) as f:
+            conversation = json.loads(f.read())
+
+        for message in conversation['messages']:
+            if(message['sender_name'] == name):
+                received = received + 1 
+            else:
+                sent = sent + 1
+    
+    # append to a total list
+    friends.append({'id': i, 'name': initials, 'started': started, 'sent': sent,
+                    'received': received, 'total': sent+received, 'relationship': randint(0, 2)})
 
 with open('friends.csv', 'w', newline='') as output_file:
     dict_writer = csv.DictWriter(output_file, friends[0].keys())
