@@ -2,19 +2,27 @@
   "nodes": [
     {
       "id": 1,
-      "name": "A"
+      "firstName": "A",
+      "lastName": "A",
+      "relationship": "owner"
     },
     {
       "id": 2,
-      "name": "B"
+      "firstName": "A",
+      "lastName": "A",
+      "relationship": "2"
     },
     {
       "id": 3,
-      "name": "C"
+      "firstName": "A",
+      "lastName": "A",
+      "relationship": "3"
     },
     {
       "id": 4,
-      "name": "D"
+      "firstName": "A",
+      "lastName": "A",
+      "relationship": "1"
     }
   ],
   "links": [
