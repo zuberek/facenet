@@ -20,3 +20,19 @@
 .App-link {
   color: #09d3ac;
 }
+
+.rangeSliderSvg {
+  position: relative;
+  bottom: 0;
+}
+
+.rangeBar {
+  stroke: grey;
+  stroke-width: 3px;
+  stroke-linecap: round;
+}
+
+.rangeBarFilled {
+  stroke: #fa7070;
+  stroke-width: 3px;
+}
