@@ -4,8 +4,10 @@ import * as d3 from "d3";
 
 import Handle from './Handle'
 import Axis from './Axis'
+import DataManager from './DataManager'
 
-const data = require('./data.json');
+// const data = require('./data.json');
+const source_path = './source.json'
 class Network extends Component {
 
     constructor(props){
@@ -19,7 +21,13 @@ class Network extends Component {
         Network.createNetwork();
     }
     static createNetwork() {
-
+        // TODO: don't hardcode this
+        let temp_ego = {
+            "id": -1,
+            "name": "chris",
+            "relationship": "owner"
+        };
+        let data = DataManager.generateNodes(source_path, temp_ego, 2012, 2019)
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = 800 - margin.left - margin.right,
@@ -48,7 +56,7 @@ class Network extends Component {
             .data(data.nodes)
             .enter()
             .append("circle")
-            .attr("r", 20)
+            .attr("r", 10)
             .style("fill", "#69b3a2")
             .call(d3.drag()
                 .on("start", dragstarted)
