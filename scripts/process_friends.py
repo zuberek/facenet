@@ -12,26 +12,30 @@ for i, inbox in enumerate(os.listdir('messages/inbox')):
     received = 0
 
     # get static data like name and start of conversation
-    with open('messages/inbox/%s/message_1.json' % inbox ) as f:
+    with open('messages/inbox/%s/message_1.json' % inbox) as f:
         conversation = json.loads(f.read())
 
     # skip if group conversation
     if(len(conversation['participants']) > 2):
         continue
-
+        
     name = conversation['title']
     clean_name = name.encode('ascii', 'ignore').decode()
 
     # skip if non ascii name
-    if(len(clean_name) == 0):
+    if(len(clean_name) < 3):
+        continue
+    if clean_name.strip() == "Facebook":
         continue
 
     name_list = conversation['title'].split() 
     initials = "" 
     for elem in name_list: 
-        initials += (elem[0].upper()+'.') 
-
-    started = datetime.fromtimestamp(int(str(conversation['messages'][-1]['timestamp_ms'])[:-3]))
+        initials += (elem[0].upper()+'.')
+    
+    newest = datetime.fromtimestamp(int(str(conversation['messages'][0]['timestamp_ms'])[:-3]))
+    
+    years = {}
 
     # count exchanged messages
     for messages in os.listdir('messages/inbox/%s' % inbox):
@@ -42,19 +46,22 @@ for i, inbox in enumerate(os.listdir('messages/inbox')):
 
         with open('messages/inbox/%s/%s' % (inbox, messages)) as f:
             conversation = json.loads(f.read())
+        started = datetime.fromtimestamp(int(str(conversation['messages'][-1]['timestamp_ms'])[:-3]))    
 
         for message in conversation['messages']:
-            if(message['sender_name'] == name):
-                received = received + 1 
+            
+            message_date = datetime.fromtimestamp(int(str(message['timestamp_ms'])[:-3]))
+            
+            if message_date.year in years:
+                years[message_date.year] = years[message_date.year] + 1
             else:
-                sent = sent + 1
-    
+                years[message_date.year] = 0
+
     # append to a total list
-    friends.append({'id': i, 'name': initials, 'started': started, 'sent': sent,
-                    'received': received, 'total': sent+received, 'relationship': randint(0, 2)})
+    friends.append({'id': i, 'name': initials, 'relationship': randint(0, 2), 'started': started.year, 'newest': newest.year, "years": years})
 
-with open('friends.csv', 'w', newline='') as output_file:
-    dict_writer = csv.DictWriter(output_file, friends[0].keys())
-    dict_writer.writeheader()
-    dict_writer.writerows(friends)
-
+dictionary =  {}
+dictionary['nodes'] = friends
+    
+with open('data_data.json', 'w', newline='') as output_file:
+    json.dump(dictionary, output_file, indent=2, default=str)
