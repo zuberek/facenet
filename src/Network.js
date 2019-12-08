@@ -25,11 +25,10 @@ class Network extends Component {
 
    
   static createNetwork(year1, year2) {
-       static createNetwork() {
         var selected = null;
         const clicked = "#225450";
         const notClicked = "#69b3a2";
-        const ego = "#aaa";
+        const egoColour = "#fa7070";
         const egoId = -1;
       
         // TODO: don't hardcode this
@@ -60,7 +59,7 @@ class Network extends Component {
             .data(data.links)
             .enter()
             .append("line")
-            .style("stroke", ego);
+            .style("stroke", "#aaa");
 
         // Initialize the nodes
         var node = svg
@@ -74,7 +73,7 @@ class Network extends Component {
             })
             .style("fill", function(d){
                 if(d.id === egoId){
-                    return ego
+                    return egoColour
                 }
                 else if (selected === this){
                     return clicked
@@ -92,11 +91,10 @@ class Network extends Component {
                     selected = this;
                     return d3.select(this).style("fill",clicked);
                 } else {
-                    return ego;
+                    return egoColour;
                 }
             })
             .attr("r", 10)
-            .style("fill", "#69b3a2")
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
