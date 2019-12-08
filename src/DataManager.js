@@ -12,7 +12,6 @@ export default class DataManager {
             let person = people[index]
             let years = person.years
 
-            // add node to the node list
             nodes.push({
                 "id": person.id,
                 "name": person.name,
@@ -34,17 +33,19 @@ export default class DataManager {
             links.push({
                 "source": ego.id,
                 "target": person.id,
-                "distance": message_count
+                "distance": message_count,
+                "message_count": message_count
             });
         }
-        let max_distance = 300
+        let max_distance = 300;
+        let alter_distance = 10;
         // append links given to links
         let source_links = source.links;
 
         // normalise the alter links
         for (let i = 0; i < source_links.length; i++) {
             let cur = source_links[i];
-            cur.distance = max_distance - (cur.distance * max_distance)
+            cur.distance = cur.distance * alter_distance;
         }
 
         // normalise the data
@@ -55,7 +56,7 @@ export default class DataManager {
 
         // links = links.concat(source_links);
 
-        console.log(links);
+        // console.log(links);
         return {"nodes": nodes, "links": links}
     }
 
