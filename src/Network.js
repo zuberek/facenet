@@ -7,12 +7,14 @@ import Axis from './Axis'
 import DataManager from './DataManager'
 
 // const data = require('./data.json');
-const source_path = './source.json'
+const source_path = './source.json';
+var selected;
+var selectedId;
 class Network extends Component {
 
     constructor(props){
         super(props);
-        this.year1 = 2011
+        this.year1 = 2011;
         this.year2 = 2015
     }
     componentDidMount() {
@@ -23,7 +25,6 @@ class Network extends Component {
     }
 
   static createNetwork(year1, year2) {
-        var selected = null;
         const clicked = "#225450";
         const notClicked = "#69b3a2";
         const egoColour = "#fa7070";
@@ -35,7 +36,7 @@ class Network extends Component {
             "name": "chris",
             "relationship": "owner"
         };
-        let data = DataManager.generateNodes(source_path, temp_ego, year1, year2)
+        let data = DataManager.generateNodes(source_path, temp_ego, year1, year2);
 
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
@@ -68,34 +69,63 @@ class Network extends Component {
             .attr("id",function(d){
                 return d.id;
             })
+            .style("stroke",function(d){
+                if(d.id !== egoId){
+                    switch(d.relationship){
+                        case 0:
+                            return "red";
+                        case 1:
+                            return "blue";
+                        case 2:
+                            return "green";
+                        case 3:
+                            return "purple";
+                        default:
+                            return "transparent";
+                    }
+                } else {
+                    return "transparent";
+                }
+            })
             .style("fill", function(d){
                 if(d.id === egoId){
                     return egoColour
                 }
-                else if (selected === this){
+                else if (selectedId === d.id){
                     return clicked
                 } else {
                     return notClicked
                 }
 
             })
+            .on("dblclick",function(d){
+                if(d.id !== egoId){
+                    d3.select(selected).style("fill",notClicked);
+                    selected = this;
+                    selectedId = d.id;
+                    d3.select(this).style("fill",clicked);
+                }
+                alert("Name: " + d.name + "\nRelationship: " + d.relationship);
+            })
             .on("click",function(d){
                 console.log(d);
                 console.log(this);
                 if(d.id !== egoId){
+                    console.log(selected)
                     d3.select(selected).style("fill",notClicked);
                     selected = this;
-                    alert("Name: " + d.name + "\nRelationship: " + d.relationship);
+                    selectedId = d.id;
                     return d3.select(this).style("fill",clicked);
                 } else {
                     return egoColour;
                 }
             })
-            .attr("r", 5)
+            .attr("r", 10)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+
 
         var label = node.append("text")
             .attr("dy", ".35em")
