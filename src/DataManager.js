@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default class DataManager {
     static generateNodes(source_path, ego, start, end) {
         let source = require('./source.json');
