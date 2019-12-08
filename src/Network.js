@@ -19,6 +19,7 @@ class Network extends Component {
         Network.createNetwork();
     }
     static createNetwork() {
+        var selected = null;
 
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
@@ -32,7 +33,6 @@ class Network extends Component {
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
         // Initialize the links
         var link = svg
@@ -50,6 +50,11 @@ class Network extends Component {
             .append("circle")
             .attr("r", 20)
             .style("fill", "#69b3a2")
+            .on("click",function(){
+                d3.select(selected).style("fill","#69b3a2");
+                selected = this;
+                return d3.select(this).style("fill","magenta");
+            })
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
