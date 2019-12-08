@@ -5,8 +5,9 @@ from datetime import datetime
 from random import randint
 
 friends = []
+assigned_ids = 0
 
-for i, inbox in enumerate(os.listdir('messages/inbox')):
+for inbox in os.listdir('messages/inbox'):
 
     sent = 0
     received = 0
@@ -33,7 +34,7 @@ for i, inbox in enumerate(os.listdir('messages/inbox')):
     for elem in name_list: 
         initials += (elem[0].upper()+'.')
     
-    newest = datetime.fromtimestamp(int(str(conversation['messages'][0]['timestamp_ms'])[:-3]))
+    latest = datetime.fromtimestamp(int(str(conversation['messages'][0]['timestamp_ms'])[:-3]))
     
     years = {}
 
@@ -46,7 +47,7 @@ for i, inbox in enumerate(os.listdir('messages/inbox')):
 
         with open('messages/inbox/%s/%s' % (inbox, messages)) as f:
             conversation = json.loads(f.read())
-        started = datetime.fromtimestamp(int(str(conversation['messages'][-1]['timestamp_ms'])[:-3]))    
+        oldest = datetime.fromtimestamp(int(str(conversation['messages'][-1]['timestamp_ms'])[:-3]))    
 
         for message in conversation['messages']:
             
@@ -58,10 +59,11 @@ for i, inbox in enumerate(os.listdir('messages/inbox')):
                 years[message_date.year] = 0
 
     # append to a total list
-    friends.append({'id': i, 'name': initials, 'relationship': randint(0, 2), 'started': started.year, 'newest': newest.year, "years": years})
+    friends.append({'id': assigned_ids, 'name': initials, 'relationship': randint(0, 2), 'oldest': oldest.year, 'latest': latest.year, "years": years})
+    assigned_ids += 1
 
 dictionary =  {}
 dictionary['nodes'] = friends
     
-with open('data_data.json', 'w', newline='') as output_file:
+with open('friends.json', 'w', newline='') as output_file:
     json.dump(dictionary, output_file, indent=2, default=str)
