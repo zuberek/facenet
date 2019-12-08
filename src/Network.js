@@ -20,6 +20,10 @@ class Network extends Component {
     }
     static createNetwork() {
         var selected = null;
+        const clicked = "#225450";
+        const notClicked = "#69b3a2";
+        const ego = "#aaa";
+        const egoId = 1;
 
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
@@ -40,7 +44,7 @@ class Network extends Component {
             .data(data.links)
             .enter()
             .append("line")
-            .style("stroke", "#aaa")
+            .style("stroke", ego);
 
         // Initialize the nodes
         var node = svg
@@ -49,11 +53,31 @@ class Network extends Component {
             .enter()
             .append("circle")
             .attr("r", 20)
-            .style("fill", "#69b3a2")
-            .on("click",function(){
-                d3.select(selected).style("fill","#69b3a2");
-                selected = this;
-                return d3.select(this).style("fill","magenta");
+            .attr("id",function(d){
+                return d.id;
+            })
+            .style("fill", function(d){
+                if(d.id === egoId){
+                    return ego
+                }
+                else if (selected === this){
+                    return clicked
+                } else {
+                    return notClicked
+                }
+
+            })
+            .on("click",function(d){
+                console.log(d);
+                console.log(this);
+                var colour;
+                if(d.id !== egoId){
+                    d3.select(selected).style("fill",notClicked);
+                    selected = this;
+                    return d3.select(this).style("fill",clicked);
+                } else {
+                    return ego;
+                }
             })
             .call(d3.drag()
                 .on("start", dragstarted)
