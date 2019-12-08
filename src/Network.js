@@ -12,7 +12,6 @@ class Network extends Component {
 
     constructor(props){
         super(props);
-        //this.createNetwork = this.createNetwork.bind(this);
         this.year1 = 2011
         this.year2 = 2015
     }
@@ -67,7 +66,6 @@ class Network extends Component {
             .data(data.nodes)
             .enter()
             .append("circle")
-            .attr("r", 20)
             .attr("id",function(d){
                 return d.id;
             })
@@ -94,11 +92,15 @@ class Network extends Component {
                     return egoColour;
                 }
             })
-            .attr("r", 10)
+            .attr("r", 5)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+
+        var label = node.append("text")
+            .attr("dy", ".35em")
+            .text(function (d) { return d.name; });
 
         // Let's list the force we wanna apply on the network
         var simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
@@ -122,6 +124,9 @@ class Network extends Component {
             node
                 .attr("cx", function (d) { return d.x; })
                 .attr("cy", function(d) { return d.y; });
+            label
+                .attr("x", function (d) { return d.x + 8; })
+                .attr("y", function (d) { return d.y; });
         }
 
         function dragstarted(d) {

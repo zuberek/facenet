@@ -1,6 +1,6 @@
 export default class DataManager {
     static generateNodes(source_path, ego, start, end) {
-        let source = require('./source.json');
+        let source = require('./inputs/Chirs-friends.json');
         let people = source.nodes;
         let nodes = [ego]
         let links = []
@@ -37,13 +37,29 @@ export default class DataManager {
                 "distance": message_count
             });
         }
+        let max_distance = 300
+        // append links given to links
+        let source_links = source.links;
+
+        // normalise the alter links
+        for (let i = 0; i < source_links.length; i++) {
+            let cur = source_links[i];
+            cur.distance = max_distance - (cur.distance * max_distance)
+        }
 
         // normalise the data
         for (let i = 0; i < links.length; i++) {
-            let cur = links[i]
-            cur.distance = ((cur.distance - min_count) / (max_count - min_count)) * 500
+            let cur = links[i];
+            cur.distance = max_distance - (((cur.distance - min_count) / (max_count - min_count)) * max_distance);
         }
 
+        // links = links.concat(source_links);
+
+        console.log(links);
         return {"nodes": nodes, "links": links}
+    }
+
+    static getMaxMinDates() {
+
     }
 }
