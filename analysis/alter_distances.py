@@ -1,14 +1,17 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-# from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import json
 
-
 convs = pd.read_csv('conversations.csv', na_filter=False)
+
+# save mappings
+mappings = convs['lang'] == 'eng'
+convs = convs[mappings]
 
 # append all messages
 convs['all'] = convs.iloc[:,3:10000].apply(lambda x: ' '.join(x), axis=1)
@@ -39,15 +42,19 @@ with open(path_to_friends) as f:
 
 friends['links'] = links
 
-with open('friends.json', 'w', newline='') as output_file:
+# Clustering
+true_k = 3
+model = KMeans(n_clusters=true_k, init='k-means++', max_iter=100, n_init=1)
+model.fit(convs_tfidf)
+print(model.labels_)
+
+for i, mapping in enumerate(mappings):
+    if(mapping == True):
+        friends['nodes'][i]['cluster'] = model.labels_[i]
+
+with open(path_to_friends, 'w', newline='') as output_file:
     json.dump(friends, output_file, indent=2, default=str)
 
-
-# Clustering
-# true_k = 3
-# model = KMeans(n_clusters=true_k, init='k-means++', max_iter=100, n_init=1)
-# model.fit(convs_tfidf)
-# print(model.labels_)
 
 # order_centroids = model.cluster_centers_.argsort()[:, ::-1]
 # terms = vectorizer.get_feature_names()
