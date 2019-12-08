@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
 import * as d3 from "d3";
-import Axis from './Axis'
 
 const xScale = d3.scaleLinear()
     .domain([2012, 2017])
     .range([50, window.screen.width / 2 - 50])
     .clamp(true);
-let h1 = xScale(2013), h2 = xScale(2015);
-let tempH1 = xScale(2013), tempH2 = xScale(2015);
-let trueYear1 = 2013, trueYear2 = 2015;
+let h1 = xScale(2011), h2 = xScale(2015);
+let tempH1 = xScale(2011), tempH2 = xScale(2015);
+let trueYear1 = 2011, trueYear2 = 2015;
 
 class Handle extends React.Component {
     // https://codepen.io/bimalgrg519/details/WEwLgQ
@@ -88,7 +87,7 @@ class Handle extends React.Component {
                 .attr("y2", 0)
                 .attr("class", "rangeBarFilled");
 
-            // onChangeYear(trueYear1, trueYear2);
+            onChangeYear(trueYear1, trueYear2);
         }
         function getTrueMouseValue(mouseValue) {
             return Math.round(xScale.invert(mouseValue));

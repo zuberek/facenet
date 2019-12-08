@@ -4,35 +4,51 @@ import * as d3 from "d3";
 
 import Handle from './Handle'
 import Axis from './Axis'
+import DataManager from './DataManager'
 
-const data = require('./data.json');
+// const data = require('./data.json');
+const source_path = './source.json'
 class Network extends Component {
 
     constructor(props){
         super(props);
         //this.createNetwork = this.createNetwork.bind(this);
+        this.year1 = 2011
+        this.year2 = 2015
     }
     componentDidMount() {
-        Network.createNetwork();
+        Network.createNetwork(this.year1, this.year2);
     }
     componentDidUpdate() {
         Network.createNetwork();
     }
-    static createNetwork() {
+
+   
+  static createNetwork(year1, year2) {
+       static createNetwork() {
         var selected = null;
         const clicked = "#225450";
         const notClicked = "#69b3a2";
         const ego = "#aaa";
-        const egoId = 1;
+        const egoId = -1;
+      
+        // TODO: don't hardcode this
+        let temp_ego = {
+            "id": -1,
+            "name": "chris",
+            "relationship": "owner"
+        };
+        let data = DataManager.generateNodes(source_path, temp_ego, year1, year2)
 
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = 800 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            height = 600 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
         var svg = d3.select("#visualisation")
             .append("svg")
+            .attr("class", "network")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -79,6 +95,8 @@ class Network extends Component {
                     return ego;
                 }
             })
+            .attr("r", 10)
+            .style("fill", "#69b3a2")
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -125,9 +143,52 @@ class Network extends Component {
             d.fy = null;
         }
 
+        //https://medium.com/walmartlabs/d3v4-forcesimulation-with-react-8b1d84364721
+        // function onChangeYear(trueYear1, trueYear2) {
+        //     data = DataManager.generateNodes(source_path, temp_ego, trueYear1, trueYear2);
+        //     link = link.data(data.links);
+        //     debugger
+        //     // remove old links
+        //     link.exit().remove()
+            
+        //     // create new links
+        //     link = link.enter().append("line")
+        //         .attr("class", "link")
+        //         .merge(link);
+
+        //     node = node.data(data.nodes);
+        //     node.exit().remove()
+
+        //     node = node.enter().append("circle")
+        //         .attr("class", "node")
+        //         .attr("r", 10)
+        //         .style("fill", "#69b3a2")
+        //         .call(d3.drag()
+        //             .on("start", dragstarted)
+        //             .on("drag", dragged)
+        //             .on("end", dragended)
+        //         )
+        //         .merge(node);
+
+        //     simulation
+        //         .nodes(data.nodes)
+        //         .on("tick", ticked);
+
+        //     simulation.force("link")
+        //         .links(data.links);
+
+        //     simulation.alphaTarget(0.3).restart();
+        // }
+        function onChangeYear(trueYear1, trueYear2) {
+            // delete current network
+            d3.select(".network").remove()
+            Network.createNetwork(trueYear1, trueYear2)
+        }
+
+
         const RangeSlider = ({ data, onChangeYear }) => {
             data = {
-                initialValue1: 2013,
+                initialValue1: 2011,
                 initialValue2: 2015
             }
             const margins = { top: 20, right: 100, bottom: 20, left: 100 },
@@ -144,18 +205,17 @@ class Network extends Component {
                 <g className="rangeSliderGroup" transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
                     <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} />
-                    <Handle onChangeYear={onChangeYear} handle="handle1" initialValue={data.initialValue1} data={data} xScale={xScale} margins={margins} svgDimensions={svgDimensions} />
                     <Handle onChangeYear={onChangeYear} handle="handle2" initialValue={data.initialValue2} data={data} xScale={xScale} margins={margins} svgDimensions={svgDimensions} />
                 </g>
             </svg>;
         }
-
-        return <RangeSlider />;
+        
+        return <RangeSlider onChangeYear={onChangeYear} />;
     }
 
 
     render() {
-        return Network.createNetwork();
+        return Network.createNetwork(2012, 2019);
     }
 }
 export default Network

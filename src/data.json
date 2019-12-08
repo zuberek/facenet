@@ -23,6 +23,12 @@
       "firstName": "A",
       "lastName": "A",
       "relationship": "1"
+    },
+    {
+      "id": 5,
+      "firstName": "A",
+      "lastName": "A",
+      "relationship": "1"
     }
   ],
   "links": [
@@ -32,14 +38,19 @@
       "distance": 100
     },
     {
+      "source": 3,
+      "target": 2,
+      "distance": 100
+    },
+    {
       "source": 1,
       "target": 3,
-      "distance": 200
+      "distance": 100
     },
     {
       "source": 1,
       "target": 4,
-      "distance": 300
+      "distance": 100
     }
   ]
 }
