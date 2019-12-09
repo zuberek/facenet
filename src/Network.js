@@ -24,9 +24,23 @@ class Network extends Component {
         Network.createNetwork();
     }
 
+    static setColour(node){
+        switch(node.relationship){
+            case 0:
+                return "#B98BF4";
+            case 1:
+                return "#876BD3";
+            case 2:
+                return "#592E83";
+            case 3:
+                return "#3C224F";
+            default:
+                return "transparent";
+        }
+    }
+
   static createNetwork(year1, year2) {
-        const clicked = "#225450";
-        const notClicked = "#69b3a2";
+        const clicked = "#DC143C";
         const egoColour = "#fa7070";
         const egoId = -1;
       
@@ -69,38 +83,18 @@ class Network extends Component {
             .attr("id",function(d){
                 return d.id;
             })
-            .style("stroke",function(d){
-                if(d.id !== egoId){
-                    switch(d.relationship){
-                        case 0:
-                            return "red";
-                        case 1:
-                            return "blue";
-                        case 2:
-                            return "green";
-                        case 3:
-                            return "purple";
-                        default:
-                            return "transparent";
-                    }
+            .style("fill",function(d){
+                if(selectedId === d.id){
+                    return clicked;
+                } else if(d.id !== egoId){
+                    return Network.setColour(d);
                 } else {
-                    return "transparent";
+                    return egoColour;
                 }
-            })
-            .style("fill", function(d){
-                if(d.id === egoId){
-                    return egoColour
-                }
-                else if (selectedId === d.id){
-                    return clicked
-                } else {
-                    return notClicked
-                }
-
             })
             .on("dblclick",function(d){
                 if(d.id !== egoId){
-                    d3.select(selected).style("fill",notClicked);
+                    d3.select(selected).style("fill",Network.setColour(d));
                     selected = this;
                     selectedId = d.id;
                     d3.select(this).style("fill",clicked);
@@ -111,8 +105,9 @@ class Network extends Component {
                 console.log(d);
                 console.log(this);
                 if(d.id !== egoId){
-                    console.log(selected)
-                    d3.select(selected).style("fill",notClicked);
+                    console.log("SELECTED: " + selected);
+                    console.log("SELECTED ID: " + selectedId);
+                    d3.select(selected).style("fill",Network.setColour(d));
                     selected = this;
                     selectedId = d.id;
                     return d3.select(this).style("fill",clicked);
@@ -213,8 +208,9 @@ class Network extends Component {
         // }
         function onChangeYear(trueYear1, trueYear2) {
             // delete current network
-            d3.select(".network").remove()
-            Network.createNetwork(trueYear1, trueYear2)
+            d3.select(".network").remove();
+            Network.createNetwork(trueYear1, trueYear2);
+            selected = document.getElementById(selectedId);
         }
 
 
