@@ -7,7 +7,10 @@ import numpy as np
 import pandas as pd
 import json
 
-convs = pd.read_csv('conversations.csv', na_filter=False)
+path_to_friends = 'data/Chirs-friends.json'
+path_to_conversations = 'Chris-conversations.csv'
+
+convs = pd.read_csv(path_to_conversations, na_filter=False)
 
 # save mappings
 mappings = convs['lang'] == 'eng'
@@ -22,13 +25,13 @@ vectorizer = TfidfVectorizer(stop_words='english')
 convs_tfidf = vectorizer.fit_transform(convs['all']).toarray()
 
 distances = cosine_similarity(convs_tfidf, convs_tfidf)
-plt.imshow(distances[:30,:30], cmap='hot', interpolation='nearest')
+plt.imshow(distances[:20,:20], cmap='hot', interpolation='nearest')
 plt.colorbar()
 plt.show()
 
 # compile distances into a list of graph links (source -> target, magnitude)
 # for each source I check less targets cuz links work both ways
-threshold = 0.5 # boundary at which the connection is deemed not strong enough
+threshold = 0.1 # boundary at which the connection is deemed not strong enough
 links = [] # compiled graph links
 for covered_sources, source_conv in enumerate(distances):
     for i, target_conv in enumerate(source_conv[covered_sources+1:]): # +1 cuz you don't link back to source
@@ -36,7 +39,6 @@ for covered_sources, source_conv in enumerate(distances):
             links.append({'source':covered_sources, 'target':i+covered_sources, 
                 "distance": target_conv})
 
-path_to_friends = 'friends.json'
 with open(path_to_friends) as f:
     friends = json.loads(f.read())
 
