@@ -26,7 +26,7 @@ class Network extends Component {
     }
 
     static setRelationship(node){
-        switch(node.relationship){
+        switch(node.cluster){
             case 0:
                 return "Colleague";
             case 1:
@@ -41,7 +41,7 @@ class Network extends Component {
     }
 
     static setColour(node){
-        switch(node.relationship){
+        switch(node.cluster){
             case 0:
                 return "#B98BF4";
             case 1:
