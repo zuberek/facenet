@@ -46,12 +46,12 @@ class Network extends Component {
       
         // TODO: don't hardcode this
         let temp_ego = {
-            "id": -1,
+            "id": egoId,
             "name": "chris",
             "relationship": "owner"
         };
-        let data = DataManager.generateNodes(source_path, temp_ego, year1, year2);
-
+        let data = JSON.parse(DataManager.generateNodes(source_path, temp_ego, year1, year2));
+        
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = 800 - margin.left - margin.right,
@@ -122,9 +122,9 @@ class Network extends Component {
                 .on("end", dragended));
 
 
-        var label = node.append("text")
-            .attr("dy", ".35em")
-            .text(function (d) { return d.name; });
+        // var label = node.append("text")
+        //     .attr("dy", ".35em")
+        //     .text(function (d) { return d.name; });
 
         // Let's list the force we wanna apply on the network
         var simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
@@ -133,7 +133,7 @@ class Network extends Component {
                 .id(function(d) {return d.id;})
                 .links(data.links)                                   // and this the list of links
             )
-            .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+            .force("charge", d3.forceManyBody().strength(-100))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
             .force("center", d3.forceCenter(width / 2, height / 2))     // This force attracts nodes to the center of the svg area
             .on("tick", ticked);
 
@@ -148,9 +148,6 @@ class Network extends Component {
             node
                 .attr("cx", function (d) { return d.x; })
                 .attr("cy", function(d) { return d.y; });
-            label
-                .attr("x", function (d) { return d.x + 8; })
-                .attr("y", function (d) { return d.y; });
         }
 
         function dragstarted(d) {
