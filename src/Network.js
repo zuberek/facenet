@@ -68,7 +68,7 @@ class Network extends Component {
         };
 
         let data = DataManager.generateNodes(source_path, temp_ego, year1, year2, thresh);
-
+        console.log(data.nodes);
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = 800 - margin.left - margin.right,
@@ -199,6 +199,8 @@ class Network extends Component {
             d3.select(".network").remove()
             Network.createNetwork(trueYear1, trueYear2, thresh)
             selected = document.getElementById(selectedId);
+            year1 = trueYear1;
+            year2 = trueYear2;
         }
         function onChangeThreshold(trueYear1, trueYear2) {
             // delete current network
