@@ -22,7 +22,6 @@ class Network extends Component {
         Network.createNetwork();
     }
 
-   
   static createNetwork(year1, year2) {
         var selected = null;
         const clicked = "#225450";
@@ -84,10 +83,10 @@ class Network extends Component {
             .on("click",function(d){
                 console.log(d);
                 console.log(this);
-                var colour;
                 if(d.id !== egoId){
                     d3.select(selected).style("fill",notClicked);
                     selected = this;
+                    alert("Name: " + d.name + "\nRelationship: " + d.relationship);
                     return d3.select(this).style("fill",clicked);
                 } else {
                     return egoColour;
