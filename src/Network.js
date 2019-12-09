@@ -205,6 +205,7 @@ class Network extends Component {
             d3.select(".network").remove()
             Network.createNetwork(year1, year2, trueYear2)
             selected = document.getElementById(selectedId);
+            thresh = trueYear2;
         }
 
         const RangeSlider = ({ data, onChangeYear }) => {
