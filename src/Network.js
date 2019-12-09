@@ -24,6 +24,20 @@ class Network extends Component {
         Network.createNetwork();
     }
 
+    static setRelationship(node){
+        switch(node.relationship){
+            case 0:
+                return "Colleague";
+            case 1:
+                return "Acquaintance";
+            case 2:
+                return "Friend";
+            case 3:
+                return "Family";
+            default:
+                return "Unknown";
+        }
+    }
 
     static setColour(node){
         switch(node.relationship){
@@ -100,15 +114,17 @@ class Network extends Component {
                     selectedId = d.id;
                     d3.select(this).style("fill",clicked);
                 }
-                var messages = 0
+                var messages = 0;
                 for(var i = 0; i < data.links.length; i++)
                 {
-                    if(data.links[i].target.id == d.id)
+                    if(data.links[i].target.id === d.id)
                     {
                         messages = data.links[i].message_count;
                     }
                 }
-                alert("Name: " + d.name + "\nRelationship: " + d.relationship + "\nMessages Sent: " + messages);
+                var relationship = Network.setRelationship(d);
+                messages = isNaN(Math.floor(messages)) ? 0 : Math.floor(messages);
+                alert("Name: " + d.name + "\nRelationship: " + relationship + "\nMessages Sent: " + messages);
             })
             .on("click",function(d){
                 console.log(d);
