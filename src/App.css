@@ -24,6 +24,13 @@
 .rangeSliderSvg {
   position: relative;
   bottom: 0;
+  grid-column:1;
+  grid-row:1;
+  margin:auto;
+}
+
+.network{
+  margin:auto;
 }
 
 .rangeBar {
@@ -35,4 +42,8 @@
 .rangeBarFilled {
   stroke: #fa7070;
   stroke-width: 3px;
+}
+
+#visualisation{
+  display: grid;
 }
