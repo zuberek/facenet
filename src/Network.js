@@ -10,6 +10,7 @@ import DataManager from './DataManager'
 const source_path = './source.json';
 var selected;
 var selectedId;
+var selectedNodeValues;
 class Network extends Component {
 
     constructor(props){
@@ -27,13 +28,13 @@ class Network extends Component {
 
     static setRelationship(node){
         switch(node.cluster){
-            case 0:
+            case "0":
                 return "Colleague";
-            case 1:
+            case "1":
                 return "Acquaintance";
-            case 2:
+            case "2":
                 return "Friend";
-            case 3:
+            case "3":
                 return "Family";
             default:
                 return "Unknown";
@@ -42,16 +43,16 @@ class Network extends Component {
 
     static setColour(node){
         switch(node.cluster){
-            case 0:
+            case "0":
                 return "#B98BF4";
-            case 1:
+            case "1":
                 return "#876BD3";
-            case 2:
+            case "2":
                 return "#592E83";
-            case 3:
+            case "3":
                 return "#3C224F";
             default:
-                return "transparent";
+                return "#e4d2f9";
         }
     }
 
@@ -68,6 +69,7 @@ class Network extends Component {
         };
 
         let data = DataManager.generateNodes(source_path, temp_ego, year1, year2, thresh);
+        console.log(data)
 
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
@@ -111,8 +113,9 @@ class Network extends Component {
             })
             .on("dblclick",function(d){
                 if(d.id !== egoId){
-                    d3.select(selected).style("fill",Network.setColour(d));
+                    d3.select(selected).style("fill",Network.setColour(selectedNodeValues));
                     selected = this;
+                    selectedNodeValues = d;
                     selectedId = d.id;
                     d3.select(this).style("fill",clicked);
                 }
@@ -134,8 +137,9 @@ class Network extends Component {
                 if(d.id !== egoId){
                     console.log("SELECTED: " + selected);
                     console.log("SELECTED ID: " + selectedId);
-                    d3.select(selected).style("fill",Network.setColour(d));
+                    if(selectedNodeValues !== undefined) d3.select(selected).style("fill",Network.setColour(selectedNodeValues));
                     selected = this;
+                    selectedNodeValues = d;
                     selectedId = d.id;
                     return d3.select(this).style("fill",clicked);
                 } else {
@@ -237,7 +241,7 @@ class Network extends Component {
             const RangeBarFilled = <line x1={xScale(info.initialValue1)} y1="0" x2={xScale(info.initialValue2)} y2="0" className="rangeBarFilled" />
 
             return <div>
-                <div class="slider_title">Year Slider</div>
+                <div className="slider_title">Year Slider</div>
                 <svg className="rangeSliderSvg" width={svgDimensions.width} height={svgDimensions.height}>
                 <g className="rangeSliderGroup" transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
@@ -276,7 +280,7 @@ class Network extends Component {
             const RangeBarFilled = <line x1={xScale(data.initialValue1)} y1="0" x2={xScale(data.initialValue2)} y2="0" className={sliderClassNames.rangeBarFilled}/>
 
             return <div> 
-                <div class="slider_title">Alter Similarity Threshold</div>
+                <div className="slider_title">Alter Similarity Threshold</div>
                 <svg className={sliderClassNames.sliderSvg} width={svgDimensions.width} height={svgDimensions.height}>
                 <g className={sliderClassNames.sliderGroup} transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
