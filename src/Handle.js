@@ -76,6 +76,11 @@ class Handle extends React.Component {
         function dragend() {
             h1 = xScale(getTrueMouseValue(tempH1));
             h2 = xScale(getTrueMouseValue(tempH2));
+            
+            if (!trueMouseValue) {
+                mouseValue = d3.mouse(this)[0];
+                trueMouseValue = getTrueMouseValue(mouseValue);
+            }
 
             d3.select("." + self.state.handle).attr("transform", "translate(" + xScale(trueMouseValue) + ",0)");
             d3.select(".rangeBarFilled").remove();
