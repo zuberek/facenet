@@ -33,6 +33,11 @@
   margin:auto;
 }
 
+.slider_title {
+  top: 43px;
+  position: relative;
+}
+
 .rangeBar, .thresholdBar {
   stroke: grey;
   stroke-width: 3px;

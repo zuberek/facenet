@@ -68,7 +68,7 @@ class Network extends Component {
         };
 
         let data = DataManager.generateNodes(source_path, temp_ego, year1, year2, thresh);
-        
+
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
             width = 800 - margin.left - margin.right,
@@ -225,7 +225,7 @@ class Network extends Component {
 
             const margins = { top: 20, right: 100, bottom: 20, left: 100 },
                 svgDimensions = { width: window.screen.width / 2, height: window.screen.height / 6 };
-                
+
             const xScale = d3.scaleLinear()
                 .domain([data.min_year, data.max_year])
                 .range([margins.left, svgDimensions.width - margins.right])
@@ -234,7 +234,9 @@ class Network extends Component {
             const RangeBar = <line x1={margins.left} y1="0" x2={svgDimensions.width - margins.right} y2="0" className="rangeBar" />
             const RangeBarFilled = <line x1={xScale(info.initialValue1)} y1="0" x2={xScale(info.initialValue2)} y2="0" className="rangeBarFilled" />
 
-            return <svg className="rangeSliderSvg" width={svgDimensions.width} height={svgDimensions.height}>
+            return <div>
+                <div class="slider_title">Year Slider</div>
+                <svg className="rangeSliderSvg" width={svgDimensions.width} height={svgDimensions.height}>
                 <g className="rangeSliderGroup" transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
                     <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} classNames={axisClassNames} />
@@ -243,7 +245,8 @@ class Network extends Component {
                         margins={margins} svgDimensions={svgDimensions} 
                         classNames={sliderClassNames} />
                 </g>
-            </svg>;
+                </svg>
+            </div>;
         }
 
         const ThresholdSlider = ({ data, onChangeThreshold }) => {
@@ -270,7 +273,9 @@ class Network extends Component {
             const RangeBar = <line x1={margins.left} y1="0" x2={svgDimensions.width - margins.right} y2="0" className={sliderClassNames.rangeBar} />
             const RangeBarFilled = <line x1={xScale(data.initialValue1)} y1="0" x2={xScale(data.initialValue2)} y2="0" className={sliderClassNames.rangeBarFilled}/>
 
-            return <svg className={sliderClassNames.sliderSvg} width={svgDimensions.width} height={svgDimensions.height}>
+            return <div> 
+                <div class="slider_title">Alter Similarity Threshold</div>
+                <svg className={sliderClassNames.sliderSvg} width={svgDimensions.width} height={svgDimensions.height}>
                 <g className={sliderClassNames.sliderGroup} transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
                     <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} />
@@ -279,7 +284,8 @@ class Network extends Component {
                         margins={margins} svgDimensions={svgDimensions} classNames={sliderClassNames}
                         sliderType={sliderType} />
                 </g>
-            </svg>;
+                </svg>
+            </div>;
         };
         
         // return <RangeSlider onChangeYear={onChangeYear} />;
