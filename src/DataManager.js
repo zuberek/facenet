@@ -20,13 +20,15 @@ export default class DataManager {
             let years = person.years
 
             // count messages based on date range
-            let message_count = 0
+            let message_distance = 0;
+            let message_count = 0;
             Object.keys(years).forEach(function(year) {
                 let current_year = parseInt(year)
                 if (current_year >= start  && current_year <= end) {
-                    message_count += years[year]
-                    if (message_count > COUNT_CLIP) {
-                        message_count = COUNT_CLIP + DECREASER*(message_count-COUNT_CLIP);
+                    message_count += years[year];
+                    message_distance += years[year];
+                    if (message_distance > COUNT_CLIP) {
+                        message_distance = COUNT_CLIP + DECREASER * (message_distance-COUNT_CLIP);
                     }
                 }
 
@@ -34,10 +36,10 @@ export default class DataManager {
                 if (current_year < min_year) min_year = current_year;
             });
 
-            if (message_count > max_count) max_count = message_count
-            if (message_count < min_count) min_count = message_count
+            if (message_distance > max_count) max_count = message_distance
+            if (message_distance < min_count) min_count = message_distance
 
-            if (message_count > 0) {
+            if (message_distance > 0) {
                 displayed_nodes.push(person.id);
                 nodes.push({
                     "id": person.id,
@@ -49,7 +51,7 @@ export default class DataManager {
                 links.push({
                     "source": ego.id,
                     "target": person.id,
-                    "distance": message_count,
+                    "distance": message_distance,
                     "message_count": message_count
                 });
             }   
