@@ -7,12 +7,14 @@ import Axis from './Axis'
 import DataManager from './DataManager'
 
 // const data = require('./data.json');
-const source_path = './source.json'
+const source_path = './source.json';
+var selected;
+var selectedId;
 class Network extends Component {
 
     constructor(props){
         super(props);
-        this.year1 = 2011
+        this.year1 = 2011;
         this.year2 = 2015
     }
     componentDidMount() {
@@ -22,10 +24,23 @@ class Network extends Component {
         Network.createNetwork();
     }
 
+    static setColour(node){
+        switch(node.relationship){
+            case 0:
+                return "#B98BF4";
+            case 1:
+                return "#876BD3";
+            case 2:
+                return "#592E83";
+            case 3:
+                return "#3C224F";
+            default:
+                return "transparent";
+        }
+    }
+
   static createNetwork(year1, year2) {
-        var selected = null;
-        const clicked = "#225450";
-        const notClicked = "#69b3a2";
+        const clicked = "#DC143C";
         const egoColour = "#fa7070";
         const egoId = -1;
       
@@ -35,7 +50,6 @@ class Network extends Component {
             "name": "chris",
             "relationship": "owner"
         };
-
         let data = JSON.parse(DataManager.generateNodes(source_path, temp_ego, year1, year2));
         
         // set the dimensions and margins of the graph
@@ -69,34 +83,44 @@ class Network extends Component {
             .attr("id",function(d){
                 return d.id;
             })
-            .style("fill", function(d){
-                if(d.id === egoId){
-                    return egoColour
-                }
-                else if (selected === this){
-                    return clicked
+            .style("fill",function(d){
+                if(selectedId === d.id){
+                    return clicked;
+                } else if(d.id !== egoId){
+                    return Network.setColour(d);
                 } else {
-                    return notClicked
+                    return egoColour;
                 }
-
+            })
+            .on("dblclick",function(d){
+                if(d.id !== egoId){
+                    d3.select(selected).style("fill",Network.setColour(d));
+                    selected = this;
+                    selectedId = d.id;
+                    d3.select(this).style("fill",clicked);
+                }
+                alert("Name: " + d.name + "\nRelationship: " + d.relationship);
             })
             .on("click",function(d){
                 console.log(d);
                 console.log(this);
                 if(d.id !== egoId){
-                    d3.select(selected).style("fill",notClicked);
+                    console.log("SELECTED: " + selected);
+                    console.log("SELECTED ID: " + selectedId);
+                    d3.select(selected).style("fill",Network.setColour(d));
                     selected = this;
-                    alert("Name: " + d.name + "\nRelationship: " + d.relationship);
+                    selectedId = d.id;
                     return d3.select(this).style("fill",clicked);
                 } else {
                     return egoColour;
                 }
             })
-            .attr("r", 5)
+            .attr("r", 10)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+
 
         // var label = node.append("text")
         //     .attr("dy", ".35em")
@@ -181,8 +205,9 @@ class Network extends Component {
         // }
         function onChangeYear(trueYear1, trueYear2) {
             // delete current network
-            d3.select(".network").remove()
-            Network.createNetwork(trueYear1, trueYear2)
+            d3.select(".network").remove();
+            Network.createNetwork(trueYear1, trueYear2);
+            selected = document.getElementById(selectedId);
         }
 
 
