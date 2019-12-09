@@ -43,7 +43,7 @@ export default class DataManager {
                     "id": person.id,
                     "name": person.name,
                     "relationship": person.relationship,
-                    "cluster": person.cluser
+                    "cluster": person.cluster
                 });
 
                 links.push({
@@ -76,7 +76,6 @@ export default class DataManager {
         let source_links = JSON.parse(JSON.stringify(source.links));
 
         // normalise the alter links
-        console.log(threshold);
         let filtered_source_links = []
         for (let i = 0; i < source_links.length; i++) {
             let cur = source_links[i];
