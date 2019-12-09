@@ -208,8 +208,8 @@ class Network extends Component {
             thresh = trueYear2;
         }
 
-        const RangeSlider = ({ data, onChangeYear }) => {
-            data = {
+        const RangeSlider = ({ info, onChangeYear }) => {
+            info = {
                 initialValue1: 2011,
                 initialValue2: 2015
             };
@@ -225,20 +225,21 @@ class Network extends Component {
 
             const margins = { top: 20, right: 100, bottom: 20, left: 100 },
                 svgDimensions = { width: window.screen.width / 2, height: window.screen.height / 6 };
+                
             const xScale = d3.scaleLinear()
-                .domain([2012, 2017])
+                .domain([data.min_year, data.max_year])
                 .range([margins.left, svgDimensions.width - margins.right])
                 .clamp(true);
-
+            
             const RangeBar = <line x1={margins.left} y1="0" x2={svgDimensions.width - margins.right} y2="0" className="rangeBar" />
-            const RangeBarFilled = <line x1={xScale(data.initialValue1)} y1="0" x2={xScale(data.initialValue2)} y2="0" className="rangeBarFilled" />
+            const RangeBarFilled = <line x1={xScale(info.initialValue1)} y1="0" x2={xScale(info.initialValue2)} y2="0" className="rangeBarFilled" />
 
             return <svg className="rangeSliderSvg" width={svgDimensions.width} height={svgDimensions.height}>
                 <g className="rangeSliderGroup" transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
                     <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} classNames={axisClassNames} />
                     <Handle onChangeYear={onChangeYear} handle="handle2" 
-                        initialValue={data.initialValue2} data={data} xScale={xScale} 
+                        initialValue={info.initialValue2} data={info} xScale={xScale} 
                         margins={margins} svgDimensions={svgDimensions} 
                         classNames={sliderClassNames} />
                 </g>

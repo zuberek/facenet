@@ -8,6 +8,9 @@ export default class DataManager {
         let max_count = Number.MIN_SAFE_INTEGER
         let min_count = Number.MAX_SAFE_INTEGER
 
+        let max_year = Number.MIN_SAFE_INTEGER;
+        let min_year = Number.MAX_SAFE_INTEGER;
+
         const COUNT_CLIP = 1000
         const DECREASER = 0.01
 
@@ -26,6 +29,9 @@ export default class DataManager {
                         message_count = COUNT_CLIP + DECREASER*(message_count-COUNT_CLIP);
                     }
                 }
+
+                if (current_year > max_year) max_year = current_year;
+                if (current_year < min_year) min_year = current_year;
             });
 
             if (message_count > max_count) max_count = message_count
@@ -83,10 +89,14 @@ export default class DataManager {
         
 
         
-        return JSON.parse(JSON.stringify({"nodes": nodes, "links": links}));
+        return JSON.parse(JSON.stringify({
+            "nodes": nodes, 
+            "links": links, 
+            "max_year": max_year, 
+            "min_year": min_year
+        }));
     }
 
     static getMaxMinDates() {
-
     }
 }
