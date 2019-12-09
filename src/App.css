@@ -24,6 +24,13 @@
 .rangeSliderSvg, .thresholdSliderSvg {
   position: relative;
   bottom: 0;
+  grid-column:1;
+  grid-row:1;
+  margin:auto;
+}
+
+.network{
+  margin:auto;
 }
 
 .rangeBar, .thresholdBar {
@@ -40,4 +47,8 @@
 .thresholdBarFilled {
   stroke: #09d3ac;
   stroke-width: 3px;
+}
+
+#visualisation{
+  display: grid;
 }
