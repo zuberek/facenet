@@ -21,12 +21,12 @@
   color: #09d3ac;
 }
 
-.rangeSliderSvg {
+.rangeSliderSvg, .thresholdSliderSvg {
   position: relative;
   bottom: 0;
 }
 
-.rangeBar {
+.rangeBar, .thresholdBar {
   stroke: grey;
   stroke-width: 3px;
   stroke-linecap: round;
@@ -34,5 +34,10 @@
 
 .rangeBarFilled {
   stroke: #fa7070;
+  stroke-width: 3px;
+}
+
+.thresholdBarFilled {
+  stroke: #09d3ac;
   stroke-width: 3px;
 }

@@ -1,6 +1,6 @@
 export default class DataManager {
-    static generateNodes(source_path, ego, start, end) {
-        let source = require('./inputs/Chirs-friends.json');
+    static generateNodes(source_path, ego, start, end, threshold) {
+        let source = require('./inputs/Chirs-friends_v2.json');
         let people = source.nodes;
         let nodes = [ego]
         let links = []
@@ -36,7 +36,8 @@ export default class DataManager {
                 nodes.push({
                     "id": person.id,
                     "name": person.name,
-                    "relationship": person.relationship
+                    "relationship": person.relationship,
+                    "cluster": person.cluser
                 });
 
                 links.push({
@@ -62,8 +63,6 @@ export default class DataManager {
 
         //     cur.distance = inversed * EGO_ALTER_CONST / 100;
         // }
-        console.log(links[0].distance);
-
 
         // deals with alter to alter
         let alter_distance = 10;
@@ -71,19 +70,20 @@ export default class DataManager {
         let source_links = JSON.parse(JSON.stringify(source.links));
 
         // normalise the alter links
+        console.log(threshold);
         let filtered_source_links = []
         for (let i = 0; i < source_links.length; i++) {
             let cur = source_links[i];
-            if (displayed_nodes.indexOf(cur.target) >= 0 && displayed_nodes.indexOf(cur.source) >= 0) {
+            if (cur.distance >= threshold && displayed_nodes.indexOf(cur.target) >= 0 && displayed_nodes.indexOf(cur.source) >= 0) {
                 filtered_source_links.push(cur);
-                cur.distance = cur.distance * alter_distance;
+                cur.distance = alter_distance - (cur.distance * alter_distance);
             }
         }
         links = links.concat(filtered_source_links);
         
 
         
-        return JSON.stringify({"nodes": nodes, "links": links});
+        return JSON.parse(JSON.stringify({"nodes": nodes, "links": links}));
     }
 
     static getMaxMinDates() {

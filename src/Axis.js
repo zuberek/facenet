@@ -3,11 +3,12 @@ import './App.css'
 import * as d3 from "d3";
 
 class Axis extends Component {
+    
     componentDidMount() {
         this.renderAxis();
     }
     renderAxis() {
-        const { svgDimensions, margins } = this.props;
+        const { svgDimensions, margins, classNames } = this.props;
         // const xValue = (svgDimensions.width - margins.left - margins.right) / 10;
         d3.select(this.axisElement)
             .call(d3.axisBottom()

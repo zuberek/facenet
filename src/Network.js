@@ -14,15 +14,16 @@ class Network extends Component {
         super(props);
         this.year1 = 2011
         this.year2 = 2015
+        this.init_thresh = 0.5
     }
     componentDidMount() {
-        Network.createNetwork(this.year1, this.year2);
+        Network.createNetwork(this.year1, this.year2, this.init_thresh);
     }
     componentDidUpdate() {
         Network.createNetwork();
     }
 
-  static createNetwork(year1, year2) {
+  static createNetwork(year1, year2, thresh) {
         var selected = null;
         const clicked = "#225450";
         const notClicked = "#69b3a2";
@@ -36,7 +37,7 @@ class Network extends Component {
             "relationship": "owner"
         };
 
-        let data = JSON.parse(DataManager.generateNodes(source_path, temp_ego, year1, year2));
+        let data = DataManager.generateNodes(source_path, temp_ego, year1, year2, thresh);
         
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
@@ -143,54 +144,32 @@ class Network extends Component {
             d.fy = null;
         }
 
-        //https://medium.com/walmartlabs/d3v4-forcesimulation-with-react-8b1d84364721
-        // function onChangeYear(trueYear1, trueYear2) {
-        //     data = DataManager.generateNodes(source_path, temp_ego, trueYear1, trueYear2);
-        //     link = link.data(data.links);
-        //     debugger
-        //     // remove old links
-        //     link.exit().remove()
-            
-        //     // create new links
-        //     link = link.enter().append("line")
-        //         .attr("class", "link")
-        //         .merge(link);
-
-        //     node = node.data(data.nodes);
-        //     node.exit().remove()
-
-        //     node = node.enter().append("circle")
-        //         .attr("class", "node")
-        //         .attr("r", 10)
-        //         .style("fill", "#69b3a2")
-        //         .call(d3.drag()
-        //             .on("start", dragstarted)
-        //             .on("drag", dragged)
-        //             .on("end", dragended)
-        //         )
-        //         .merge(node);
-
-        //     simulation
-        //         .nodes(data.nodes)
-        //         .on("tick", ticked);
-
-        //     simulation.force("link")
-        //         .links(data.links);
-
-        //     simulation.alphaTarget(0.3).restart();
-        // }
         function onChangeYear(trueYear1, trueYear2) {
             // delete current network
             d3.select(".network").remove()
-            Network.createNetwork(trueYear1, trueYear2)
+            Network.createNetwork(trueYear1, trueYear2, thresh)
         }
-
+        function onChangeThreshold(trueYear1, trueYear2) {
+            // delete current network
+            d3.select(".network").remove()
+            Network.createNetwork(year1, year2, trueYear2)
+        }
 
         const RangeSlider = ({ data, onChangeYear }) => {
             data = {
                 initialValue1: 2011,
                 initialValue2: 2015
-            }
+            };
+            const sliderClassNames = {
+                "sliderSvg": "rangeSliderSvg",
+                "sliderGroup": "rangeSliderGroup",
+                "rangeBar": "rangeBar",
+                "rangeBarFilled": "rangeBarFilled"
+            };
+            const axisClassNames = {
+                "axis": "rangeSliderAxis"
+            };
+
             const margins = { top: 20, right: 100, bottom: 20, left: 100 },
                 svgDimensions = { width: window.screen.width / 2, height: window.screen.height / 6 };
             const xScale = d3.scaleLinear()
@@ -204,18 +183,63 @@ class Network extends Component {
             return <svg className="rangeSliderSvg" width={svgDimensions.width} height={svgDimensions.height}>
                 <g className="rangeSliderGroup" transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
                     {RangeBar}{RangeBarFilled}
-                    <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} />
-                    <Handle onChangeYear={onChangeYear} handle="handle2" initialValue={data.initialValue2} data={data} xScale={xScale} margins={margins} svgDimensions={svgDimensions} />
+                    <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} classNames={axisClassNames} />
+                    <Handle onChangeYear={onChangeYear} handle="handle2" 
+                        initialValue={data.initialValue2} data={data} xScale={xScale} 
+                        margins={margins} svgDimensions={svgDimensions} 
+                        classNames={sliderClassNames} />
                 </g>
             </svg>;
         }
+
+        const ThresholdSlider = ({ data, onChangeThreshold }) => {
+            data = {
+                initialValue1: 0,
+                initialValue2: thresh
+            }
+
+            const sliderClassNames = {
+                "sliderSvg": "thresholdSliderSvg",
+                "sliderGroup": "thresholdSliderGroup",
+                "rangeBar": "thresholdBar",
+                "rangeBarFilled": "thresholdBarFilled"
+            };
+            const sliderType = "cont";
+
+            const margins = { top: 20, right: 100, bottom: 20, left: 100 },
+                svgDimensions = { width: window.screen.width / 2, height: window.screen.height / 6 };
+            const xScale = d3.scaleLinear()
+                .domain([0, 1])
+                .range([margins.left, svgDimensions.width - margins.right])
+                .clamp(false);
+
+            const RangeBar = <line x1={margins.left} y1="0" x2={svgDimensions.width - margins.right} y2="0" className={sliderClassNames.rangeBar} />
+            const RangeBarFilled = <line x1={xScale(data.initialValue1)} y1="0" x2={xScale(data.initialValue2)} y2="0" className={sliderClassNames.rangeBarFilled}/>
+
+            return <svg className={sliderClassNames.sliderSvg} width={svgDimensions.width} height={svgDimensions.height}>
+                <g className={sliderClassNames.sliderGroup} transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>
+                    {RangeBar}{RangeBarFilled}
+                    <Axis margins={margins} svgDimensions={svgDimensions} xScale={xScale} />
+                    <Handle onChangeYear={onChangeThreshold} handle="handle3" 
+                    initialValue={data.initialValue2} data={data} xScale={xScale} 
+                        margins={margins} svgDimensions={svgDimensions} classNames={sliderClassNames}
+                        sliderType={sliderType} />
+                </g>
+            </svg>;
+        };
         
-        return <RangeSlider onChangeYear={onChangeYear} />;
+        // return <RangeSlider onChangeYear={onChangeYear} />;
+        return (
+            <div className="test">
+                <RangeSlider onChangeYear={onChangeYear} />
+                <ThresholdSlider onChangeThreshold={onChangeThreshold} />
+            </div>
+        );
     }
 
 
     render() {
-        return Network.createNetwork(2012, 2019);
+        return Network.createNetwork(2012, 2019, 0.5);
     }
 }
 export default Network
