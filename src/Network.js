@@ -279,7 +279,7 @@ class Network extends Component {
             const RangeBar = <line x1={margins.left} y1="0" x2={svgDimensions.width - margins.right} y2="0" className={sliderClassNames.rangeBar} />
             const RangeBarFilled = <line x1={xScale(data.initialValue1)} y1="0" x2={xScale(data.initialValue2)} y2="0" className={sliderClassNames.rangeBarFilled}/>
 
-            return <div> 
+            return <div style={{top: "-46px", position: "relative"}}> 
                 <div className="slider_title">Alter Similarity Threshold</div>
                 <svg className={sliderClassNames.sliderSvg} width={svgDimensions.width} height={svgDimensions.height}>
                 <g className={sliderClassNames.sliderGroup} transform={`translate(0,${svgDimensions.height - margins.bottom - 40})`}>

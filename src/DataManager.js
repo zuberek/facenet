@@ -26,7 +26,7 @@ export default class DataManager {
                 let current_year = parseInt(year)
                 if (current_year >= start  && current_year <= end) {
                     message_count += years[year];
-                    message_distance += years[year];
+                    message_distance += years[year] * year;
                     if (message_distance > COUNT_CLIP) {
                         message_distance = COUNT_CLIP + DECREASER * (message_distance-COUNT_CLIP);
                     }
