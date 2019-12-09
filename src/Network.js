@@ -24,6 +24,7 @@ class Network extends Component {
         Network.createNetwork();
     }
 
+
     static setColour(node){
         switch(node.relationship){
             case 0:
@@ -99,7 +100,15 @@ class Network extends Component {
                     selectedId = d.id;
                     d3.select(this).style("fill",clicked);
                 }
-                alert("Name: " + d.name + "\nRelationship: " + d.relationship);
+                var messages = 0
+                for(var i = 0; i < data.links.length; i++)
+                {
+                    if(data.links[i].target.id == d.id)
+                    {
+                        messages = data.links[i].message_count;
+                    }
+                }
+                alert("Name: " + d.name + "\nRelationship: " + d.relationship + "\nMessages Sent: " + messages);
             })
             .on("click",function(d){
                 console.log(d);
