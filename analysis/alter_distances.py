@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import json
+#%% 
 
-path_to_friends = 'data/Chirs-friends.json'
-path_to_conversations = 'Chris-conversations.csv'
+path_to_friends = 'data/Parry-friends.json'
+path_to_conversations = 'Parry-conversations.csv'
 
 convs = pd.read_csv(path_to_conversations, na_filter=False)
 
@@ -25,13 +26,15 @@ vectorizer = TfidfVectorizer(stop_words='english')
 convs_tfidf = vectorizer.fit_transform(convs['all']).toarray()
 
 distances = cosine_similarity(convs_tfidf, convs_tfidf)
-plt.imshow(distances[:20,:20], cmap='hot', interpolation='nearest')
+plt.imshow(distances[:40,:40], cmap='hot', interpolation='nearest')
 plt.colorbar()
 plt.show()
 
+#%% 
+
 # compile distances into a list of graph links (source -> target, magnitude)
 # for each source I check less targets cuz links work both ways
-threshold = 0.1 # boundary at which the connection is deemed not strong enough
+threshold = 0 # boundary at which the connection is deemed not strong enough
 links = [] # compiled graph links
 for covered_sources, source_conv in enumerate(distances):
     for i, target_conv in enumerate(source_conv[covered_sources+1:]): # +1 cuz you don't link back to source
@@ -44,11 +47,21 @@ with open(path_to_friends) as f:
 
 friends['links'] = links
 
+#%% 
+
 # Clustering
-true_k = 3
+true_k = 4
 model = KMeans(n_clusters=true_k, init='k-means++', max_iter=100, n_init=1)
 model.fit(convs_tfidf)
-print(model.labels_)
+labels = model.labels_
+
+unique, counts = np.unique(labels, return_counts=True)
+labels_count = dict(zip(unique, counts))
+sorted_labels = sorted(labels_count, reverse=True, key=labels_count.__getitem__)
+label_mapping = dict([ (label, i) for i, label in enumerate(sorted_labels) ])
+for i in range(len(labels)):
+    labels[i] = label_mapping[labels[i]]
+
 
 for i, mapping in enumerate(mappings):
     if(mapping == True):
@@ -65,3 +78,5 @@ with open(path_to_friends, 'w', newline='') as output_file:
 #     print('Cluster %d:' % i),
 #     for ind in order_centroids[i, :10]:
 #         print(' %s' % terms[ind])
+
+# %%
