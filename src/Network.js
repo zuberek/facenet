@@ -69,7 +69,6 @@ class Network extends Component {
         };
 
         let data = DataManager.generateNodes(source_path, temp_ego, year1, year2, thresh);
-        console.log(data)
 
         // set the dimensions and margins of the graph
         var margin = {top: 50, right: 50, bottom: 50, left: 50},
@@ -119,14 +118,15 @@ class Network extends Component {
                     selectedId = d.id;
                     d3.select(this).style("fill",clicked);
                 }
-                var messages = 0;
-                for(var i = 0; i < data.links.length; i++)
-                {
-                    if(data.links[i].target.id === d.id)
-                    {
-                        messages = data.links[i].message_count;
-                    }
-                }
+                // var messages = 0;
+                // for(var i = 0; i < data.links.length; i++)
+                // {
+                //     if(data.links[i].target.id === d.id)
+                //     {
+                //         messages = data.links[i].message_count;
+                //     }
+                // }
+                var messages = d.message_count ? d.message_count : 0;
                 var relationship = Network.setRelationship(d);
                 messages = isNaN(Math.floor(messages)) ? 0 : Math.floor(messages);
                 alert("Name: " + d.name + "\nRelationship: " + relationship + "\nMessages Sent: " + messages);

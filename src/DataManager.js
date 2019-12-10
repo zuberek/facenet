@@ -45,7 +45,8 @@ export default class DataManager {
                     "id": person.id,
                     "name": person.name,
                     "relationship": person.relationship,
-                    "cluster": person.cluster
+                    "cluster": person.cluster,
+                    "message_count": message_count
                 });
 
                 links.push({
