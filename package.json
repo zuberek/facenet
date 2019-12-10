@@ -2,6 +2,7 @@
   "name": "facenet",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://zuberek.github.io/facenet",
   "dependencies": {
     "d3": "^5.14.2",
     "d3-array": "latest",
