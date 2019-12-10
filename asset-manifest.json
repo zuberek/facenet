@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.45c93c37.chunk.css",
-    "main.js": "/static/js/main.fd0c625b.chunk.js",
-    "main.js.map": "/static/js/main.fd0c625b.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e0d33c12.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e0d33c12.js.map",
-    "static/js/2.69264b4d.chunk.js": "/static/js/2.69264b4d.chunk.js",
-    "static/js/2.69264b4d.chunk.js.map": "/static/js/2.69264b4d.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.8311ff9caebcc19201f0088c4252e5aa.js": "/precache-manifest.8311ff9caebcc19201f0088c4252e5aa.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.45c93c37.chunk.css.map": "/static/css/main.45c93c37.chunk.css.map"
+    "main.css": "/facenet/static/css/main.45c93c37.chunk.css",
+    "main.js": "/facenet/static/js/main.5b2a6463.chunk.js",
+    "main.js.map": "/facenet/static/js/main.5b2a6463.chunk.js.map",
+    "runtime-main.js": "/facenet/static/js/runtime-main.3cbfb0e5.js",
+    "runtime-main.js.map": "/facenet/static/js/runtime-main.3cbfb0e5.js.map",
+    "static/js/2.69264b4d.chunk.js": "/facenet/static/js/2.69264b4d.chunk.js",
+    "static/js/2.69264b4d.chunk.js.map": "/facenet/static/js/2.69264b4d.chunk.js.map",
+    "index.html": "/facenet/index.html",
+    "precache-manifest.9442be65505dfb9dd0eb6bf0c6b4f5a6.js": "/facenet/precache-manifest.9442be65505dfb9dd0eb6bf0c6b4f5a6.js",
+    "service-worker.js": "/facenet/service-worker.js",
+    "static/css/main.45c93c37.chunk.css.map": "/facenet/static/css/main.45c93c37.chunk.css.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.e0d33c12.js",
+    "static/js/runtime-main.3cbfb0e5.js",
     "static/js/2.69264b4d.chunk.js",
     "static/css/main.45c93c37.chunk.css",
-    "static/js/main.fd0c625b.chunk.js"
+    "static/js/main.5b2a6463.chunk.js"
   ]
 }
