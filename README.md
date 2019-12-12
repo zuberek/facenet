@@ -1,14 +1,17 @@
 # facenet
+
+![alt text](https://github.com/zuberek/facebook/raw/master/Capture.png "Screenshot")
+
 Due to privacy reasons we were not able to share real data here.
 To allow for reproducibility however, we created fake conversations in messages/ folder.
 It is possible to download ones own Facebook data and place it here. 
-Follow: https://www.facebook.com/help/1701730696756992
+Follow: https://www.facebook.com/help/1701730696756992.
 Download just the messages from any time period and replace messages/ folder in here.
 
 Facebook data is organised as follows:
-inbox - all conversations user had
-conversation - all messages user exchanged with a particular person
-message - a single message
+- inbox - all conversations user had
+- conversation - all messages user exchanged with a particular person
+- message - a single message
 
 Execution:
 There are two folders of code. One is scripts/, one is analysis/.
@@ -40,6 +43,8 @@ By default this loads pretrained weights to the network and makes a prediction.
 If you want to train yourself, change the boolean IS_TRAINING at the beginning to true. 
 This file attaches a field relationship to each node in the friends.json file.
 
+
+## Visualisation
 After running all those programs, the resulting `friends.json` file can 
 be moved to frontend visualization = `feature-d3-implementation-01` branch and 
 a reference in src/DataManager.js should be changed to the new file.
