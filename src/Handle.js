@@ -11,7 +11,7 @@ let tempH1 = xScale(2011), tempH2 = xScale(2015);
 let trueYear1 = 2011, trueYear2 = 2015;
 
 class Handle extends React.Component {
-    // https://codepen.io/bimalgrg519/details/WEwLgQ
+    // taken from: https://codepen.io/bimalgrg519/details/WEwLgQ
     
     constructor(props) {
         super(props);

@@ -215,8 +215,9 @@ class Network extends Component {
         }
 
         const RangeSlider = ({ info, onChangeYear }) => {
+            // taken from: https://codepen.io/bimalgrg519/details/WEwLgQ
             info = {
-                initialValue1: 2011,
+                initialValue1: data.min_year - 1,
                 initialValue2: 2015
             };
             const sliderClassNames = {

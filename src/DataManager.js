@@ -1,6 +1,7 @@
 export default class DataManager {
     static generateNodes(source_path, ego, start, end, threshold) {
         let source = require('./inputs/Chirs-friends_v2.json');
+        // let source = require('./inputs/Parry-friends.json');
         let people = source.nodes;
         let nodes = [ego]
         let links = []

@@ -3,6 +3,7 @@ import './App.css'
 import * as d3 from "d3";
 
 class Axis extends Component {
+    // taken from: https://codepen.io/bimalgrg519/details/WEwLgQ
     
     componentDidMount() {
         this.renderAxis();
