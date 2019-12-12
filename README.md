@@ -1,6 +1,6 @@
 # facenet
-
-![alt text](https://github.com/zuberek/facebook/raw/master/Capture.png "Screenshot")
+Visualise your facebook network.
+![alt text](https://raw.githubusercontent.com/zuberek/facenet/master/Capture.PNG "Screenshot")
 
 Due to privacy reasons we were not able to share real data here.
 To allow for reproducibility however, we created fake conversations in messages/ folder.
