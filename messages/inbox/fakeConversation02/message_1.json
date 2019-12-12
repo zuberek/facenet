@@ -1,0 +1,28 @@
+{
+    "participants": [
+      {
+        "name": "Fake alter 2"
+      },
+      {
+        "name": "Fake user"
+      }
+    ],
+    "messages": [
+      {
+        "sender_name": "Fake alter 2",
+        "timestamp_ms": 1572722962885,
+        "content": "Hi, this is another very fake message",
+        "type": "Generic"
+      },
+      {
+        "sender_name": "Fake user",
+        "timestamp_ms": 1572722962885,
+        "content": "Hi, this is a fake message too",
+        "type": "Generic"
+      }
+    ],
+    "title": "Fake alter 2",
+    "is_still_participant": true,
+    "thread_type": "Regular",
+    "thread_path": "inbox/fakeConversation02"
+}
