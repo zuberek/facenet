@@ -2,3 +2,4 @@ messages/
 env/
 .vscode/
 node_modules/
+inboxes/
